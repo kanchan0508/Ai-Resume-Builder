@@ -6,9 +6,10 @@ const ResumeItem = ({ resume }) => {
     if (!resume || !resume.title) {
       return <div>No Resume Data Available</div>; // Fallback message
     }
+    console.log(resume.id)
   
     return (
-        <Link to={'/dashboard/resume/'+resume.resumeId+'/edit'}>
+        <Link to={'/dashboard/resume/'+resume.documentId+'/edit'}>
       <div className='ml-5 mt-5'>
         <div className='p-14 bg-secondary hover:scale-105 transition-all hover:shadow-md shadow-primary flex items-center border justify-center h-[280px]'>
           <Notebook />

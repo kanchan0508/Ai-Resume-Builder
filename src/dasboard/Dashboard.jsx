@@ -22,12 +22,13 @@ const Dashboard = () => {
 
   const GetResumesList = () => {
     const emailAddress = user?.primaryEmailAddress?.emailAddress;
-    console.log("Email Address for API call:", emailAddress);
+   
   
     if (emailAddress) {
       GlobalApi.GetUserResumes(emailAddress).then(res => { // Use "res" here
         setResumeList(res.data.data);
-        console.log("res:" + res)
+      
+  
       }).catch(err => {
         console.error("Error fetching resumes:", err);
       });
@@ -35,9 +36,7 @@ const Dashboard = () => {
       console.error("Email address is undefined!");
     }
   };
-  console.log("Resume List:", resumeList);
   
-
   return (
     <div className='p-10 md:px-20 lg:px-32'>
       <h2 className='font-bold text-3xl'>My Resume</h2>
