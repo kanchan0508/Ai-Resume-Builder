@@ -9,9 +9,16 @@ import { toast } from 'sonner';
 const PROMPT = 'position title: {positionTitle} , Depends on position title give me 5-7 points for my experience in resume , give me result in HTML tags';
 
 function RichTextEditor({ onRichTextEditorChange, index, defaultValue }) {
-    const [value, setValue] = useState(defaultValue);
+    const [value, setValue] = useState(defaultValue || ""); // Fallback to empty string if defaultValue is undefined
     const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
     const [loading, setLoading] = useState(false);
+
+    console.log(defaultValue+ "value")
+
+    React.useEffect(() => {
+        setValue(defaultValue);
+    }, [defaultValue]);
+    
 
     const GenerateSummeryFromAI = async () => {
         if (!resumeInfo?.experience[index]?.title) {

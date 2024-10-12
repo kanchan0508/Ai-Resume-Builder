@@ -51,11 +51,11 @@ const Education = () => {
   };
   const onSave = () => {
     setLoading(true)
-    const data ={
-       data:{
-        education: educationalList,
-       }
-      };
+    const data={
+      data:{
+        education:educationalList.map(({ id, ...rest }) => rest)
+      }
+    }
 
       GlobalApi.UpdateResumeDetail(params.resumeId, data).then(resp=>{
         console.log(resp)
