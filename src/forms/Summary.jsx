@@ -27,6 +27,9 @@ const Summary = ({ enableNext }) => {
       });
     }
   }, [summery]);
+  useEffect(()=>{
+    resumeInfo&&setSummery(resumeInfo?.summery)
+  },[])
 
   const GenerateSummeryFromAi = async () => {
     setLoading(true);
@@ -103,7 +106,7 @@ const Summary = ({ enableNext }) => {
           <Textarea
             className="mt-5"
             required
-            value={summery}
+            value={resumeInfo?.summery}
             onChange={(e) => setSummery(e.target.value)}
           />
 
