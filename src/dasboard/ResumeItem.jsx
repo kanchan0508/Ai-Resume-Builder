@@ -1,13 +1,52 @@
 import { Notebook } from 'lucide-react'
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
-const ResumeItem = ({ resume }) => {
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import GlobalApi from '../../Service/GlobalApi';
+
+
+
+const ResumeItem = ({ resume, refreshData }) => {
     if (!resume || !resume.title) {
       return <div>No Resume Data Available</div>; // Fallback message
     }
   
-  
+   const navigation = useNavigate()
+
+   const [openAlert,setOpenAlert]=useState(false);
+   const [loading,setLoading]=useState(false);
+ 
+   const onDelete=()=>{
+     setLoading(true);
+     GlobalApi.DeleteResumeById(resume.documentId).then(resp=>{
+       console.log(resp);
+       toast('Resume Deleted!');
+       refreshData()
+       setLoading(false);
+       setOpenAlert(false);
+     },(error)=>{
+       setLoading(false);
+     })
+   }
     return (
         <Link to={'/dashboard/resume/'+resume.documentId+'/edit'}>
       <div className='ml-5 mt-5'>
@@ -26,7 +65,47 @@ const ResumeItem = ({ resume }) => {
                 <img src="/cv.png" width={80} height={80} />
               </div>
         </div>
-        <h2 className='text-center text-sm  mt-2'>{resume.title}</h2>
+        <div className='border p-3 flex justify-between  text-white rounded-b-lg shadow-lg'
+         style={{
+          background:resume?.themeColor
+        }}>
+          <h2 className='text-sm'>{resume.title}</h2>
+         
+          <DropdownMenu>
+          <DropdownMenuTrigger>
+          <MoreVertical className='h-4 w-4 cursor-pointer'/>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+           
+            <DropdownMenuItem  onClick={()=>navigation('/dashboard/resume/'+resume.documentId+"/edit")}>Edit</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>navigation('/my-resume/'+resume.documentId+"/view")}>View</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>navigation('/my-resume/'+resume.documentId+"/view")}>Download</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=>setOpenAlert(true)}>Delete</DropdownMenuItem>
+            
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <AlertDialog open={openAlert}>
+        
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account
+              and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={()=>setOpenAlert(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={onDelete} 
+            disabled={loading}>
+              {loading? <Loader2Icon className='animate-spin'/>:'Delete'}
+              </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+        </div>
       </div>
       </Link>
     );
