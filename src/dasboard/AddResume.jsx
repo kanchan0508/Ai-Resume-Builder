@@ -60,7 +60,7 @@ const AddResume = () => {
         onClick={() => setOpenDialog(true)}
         className="p-14 mt-5 py-24 border item-center flex justify-center bg-secondary rounded-lg h-[280px] hover:scale-105 transition-all hover:shadow-md border-dashed"
       >
-        <PlusSquare />
+        <PlusSquare className="text-blue-600" />
       </div>
       <Dialog open={openDialog}>
         <DialogContent>

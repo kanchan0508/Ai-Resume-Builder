@@ -53,7 +53,10 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		  boxShadow: {
+			'top-only': '0 -4px 10px rgba(0, 0, 0, 0.2)', // Custom shadow focused on the top
+		  },
   	}
   },
   plugins: [require("tailwindcss-animate")],

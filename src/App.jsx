@@ -4,6 +4,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import Header from "./components/custom/Header";
 import { Toaster } from "./components/ui/sonner";
+import Footer from "./home/Footer";
+import ReviewSection from "./components/custom/ReviwSection";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -13,10 +15,13 @@ function App() {
     return <Navigate to={"/auth/sign-in"} />;
   }
   return (
-    <>
+    < >
+    
       <Header />
       <Outlet />
+      <Footer />
       <Toaster />
+      
     </>
   );
 }

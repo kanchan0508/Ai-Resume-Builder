@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* src/index.css */
+:root {
+  --bg-color: white;
+  --text-color: black;
+}
+
+[data-theme='dark'] {
+  --bg-color: #1a202c; /* Dark background */
+  --text-color: white;  /* Light text */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 @media print{
   #no-print{
     display: none !important;

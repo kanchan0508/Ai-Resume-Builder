@@ -9,6 +9,7 @@ import Signin from './Auth/SignIn-Up.jsx'
 import { ClerkProvider } from '@clerk/clerk-react'
 import EditResume from './dasboard/EditResume.jsx'
 import ViewResume from './my-resume/ViewResume.jsx'
+import { ThemeProvider } from './context/ThemeContext.jsx'
 
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
@@ -52,7 +53,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
      <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-   <RouterProvider router={router} />
+     <ThemeProvider>  {/* Wrap with ThemeProvider */}
+        <RouterProvider router={router} />
+      </ThemeProvider>
    </ClerkProvider>
   </StrictMode>,
 )
