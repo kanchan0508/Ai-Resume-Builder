@@ -15,7 +15,7 @@ const Summary = ({ enableNext }) => {
   const { resumeInfo, setResumeInfo } = useContext(ResumeInfoContext);
   const [summery, setSummery] = useState("");
   const [loading, setLoading] = useState(false);
-  const [aiGeneratedSummeryList, setAiGeneratedSummeryList] = useState({});
+  const [aiGeneratedSummeryList, setAiGeneratedSummeryList] = useState([]);
 
   const params = useParams();
 
@@ -27,32 +27,27 @@ const Summary = ({ enableNext }) => {
       });
     }
   }, [summery]);
-  useEffect(()=>{
-    resumeInfo&&setSummery(resumeInfo?.summery)
-  },[])
+
+  useEffect(() => {
+    resumeInfo && setSummery(resumeInfo?.summery);
+  }, []);
 
   const GenerateSummeryFromAi = async () => {
     setLoading(true);
     const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.jobTitle);
-  
+
     try {
       const result = await AIChatSession.sendMessage(PROMPT);
       const responseText = await result.response.text();
-  
-      console.log("AI Response Text:", responseText); // Log the raw response
-  
-      // Fix: Wrap the response in an array
-      const fixedResponseText = `[${responseText}]`; // Wrap in square brackets
-  
-      // Try parsing the corrected response
-      try {
-        const parsedResult = JSON.parse(fixedResponseText);
-        setAiGeneratedSummeryList(parsedResult); // Set the parsed array
-      } catch (parseError) {
-        console.error("Error parsing JSON:", parseError);
-        toast.error("Invalid response format from AI service.");
-      }
-  
+
+      console.log("AI Response Text:", responseText);
+
+      // Wrap the response in an array
+      const fixedResponseText = `[${responseText}]`;
+
+      // Parse the corrected response
+      const parsedResult = JSON.parse(fixedResponseText);
+      setAiGeneratedSummeryList(parsedResult); // Set the parsed array
     } catch (error) {
       console.error("Error generating summary:", error);
       toast.error("Failed to generate summary from AI.");
@@ -60,7 +55,6 @@ const Summary = ({ enableNext }) => {
       setLoading(false);
     }
   };
-  
 
   const onSave = (e) => {
     e.preventDefault();
@@ -82,6 +76,10 @@ const Summary = ({ enableNext }) => {
     );
   };
 
+  const handleSummaryClick = (summary) => {
+    setSummery(summary);
+  };
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-lg border-t-primary border-t-4 mt-10">
@@ -95,7 +93,7 @@ const Summary = ({ enableNext }) => {
               variant="outline"
               type="button"
               size="sm"
-              onClick={() => GenerateSummeryFromAi()}
+              onClick={GenerateSummeryFromAi}
               className="border-primary text-primary flex gap-2"
             >
               <Brain className="h-4 w-4" />
@@ -106,7 +104,7 @@ const Summary = ({ enableNext }) => {
           <Textarea
             className="mt-5"
             required
-            value={resumeInfo?.summery}
+            value={summery}
             onChange={(e) => setSummery(e.target.value)}
           />
 
@@ -118,12 +116,16 @@ const Summary = ({ enableNext }) => {
         </form>
       </div>
 
-      {Object.keys(aiGeneratedSummeryList).length > 0 && (
-        <div>
-          <h2 className="font-bold text-lg">Suggestions</h2>
-          {Object.entries(aiGeneratedSummeryList).map(([key, item]) => (
-            <div key={key}>
-              <h2 className="font-bold">Level: {item.experience_level}</h2>
+      {aiGeneratedSummeryList.length > 0 && (
+        <div className="mt-5">
+          <h2 className="font-bold text-lg">AI-Generated Summaries</h2>
+          {aiGeneratedSummeryList.map((item, index) => (
+            <div
+              key={index}
+              className="p-4 mt-3 shadow rounded-lg border hover:bg-gray-100 cursor-pointer"
+              onClick={() => handleSummaryClick(item.summary)}
+            >
+              <h2 className="font-bold">Experience Level: {item.experience_level}</h2>
               <p>{item.summary}</p>
             </div>
           ))}
