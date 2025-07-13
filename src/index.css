@@ -194,6 +194,16 @@ html {
   }
 }
 
+@keyframes gradient-x {
+  0%, 100% {
+    background-size: 200% 200%;
+    background-position: left center;
+  }
+  50% {
+    background-size: 200% 200%;
+    background-position: right center;
+  }
+}
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out;
 }
@@ -202,6 +212,17 @@ html {
   animation: slideInRight 0.6s ease-out;
 }
 
+.animate-gradient-x {
+  animation: gradient-x 3s ease infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
 /* Gradient text utility */
 .gradient-text {
   background: linear-gradient(135deg, #8b5cf6, #ec4899);
