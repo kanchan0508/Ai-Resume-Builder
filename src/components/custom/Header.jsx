@@ -1,43 +1,51 @@
-import { UserButton, useUser } from '@clerk/clerk-react';
-import { useTheme } from '../../context/ThemeContext'; // Import useTheme hook
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@headlessui/react';
-import { Toggle } from "@/components/ui/toggle"
-
+import { UserButton, useUser } from '@clerk/clerk-react';
+import { Button } from '../ui/button';
 
 const Header = () => {
-  const { user, isSignedIn } = useUser();
-  const { toggleTheme } = useTheme(); // Get toggleTheme function
+  const { isSignedIn } = useUser();
 
   return (
-    <div className='p-5 flex justify-between shadow-md'>
-      <Link to={"/"}>
-        <img src='/Logo.png' width={150} className='h-16' />
-      </Link>
+    <header className='w-full border-b border-gray-200 bg-white'>
+      <div className='container mx-auto px-4 md:px-6 h-20 flex items-center justify-between'>
+        <Link to={'/'} className='flex items-center gap-2'>
+          <img src='/Logo.png' alt="Logo" className='h-14 w-auto' />
+        </Link>
 
-      <div className='flex items-center '>
-      <button onClick={toggleTheme} className="border border-pink-500 text-pink-500 py-3 px-8 mr-4 hover:scale-110 rounded-lg shadow-lg font-medium">
-           Theme
-          </button>
-
-        {isSignedIn ? (
-          <div className='flex gap-3 items-center'>
-            <Link to="/dashboard">
-            <button className="border border-pink-500 text-pink-500 hover:scale-110 py-3 px-8 rounded-lg shadow-lg font-medium">
-            Dashboard
-          </button>
-            </Link>
-            <UserButton />
-          </div>
-        ) : (
-          <Link to="/auth/sign-in">
-           <button className="border border-pink-500 text-pink-500 hover:scale-110 py-3 px-8 rounded-lg shadow-lg font-medium">
-            Get Started
-          </button>
-          </Link>
-        )}
+        <div className='flex items-center gap-4'>
+          {isSignedIn ? (
+            <div className='flex items-center gap-4'>
+              <Link to={'/dashboard'}>
+                <Button variant="ghost" className="text-gray-600 hover:text-gray-900 font-medium">
+                  Dashboard
+                </Button>
+              </Link>
+              <UserButton 
+                appearance={{
+                  elements: {
+                    avatarBox: "w-9 h-9"
+                  }
+                }}
+              />
+            </div>
+          ) : (
+            <div className='flex items-center gap-3'>
+              <Link to={'/auth/sign-in'}>
+                <Button variant="ghost" className="text-gray-600 hover:text-gray-900 font-medium">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to={'/auth/sign-in'}>
+                <Button className="bg-primary text-white hover:bg-primary/90 font-medium px-6">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 

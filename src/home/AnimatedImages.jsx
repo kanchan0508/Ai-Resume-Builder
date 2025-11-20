@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 
 const images = [
   'https://marketplace.canva.com/EAFjRZP7Qy4/1/0/1131w/canva-minimalist-modern-professional-cv-resume-xkDELtpQH94.jpg',
-  'https://i.pinimg.com/736x/5d/e6/75/5de675c806a055f1219aed28600f3a62.jpg',
   'https://www.resumebuilder.com/wp-content/uploads/2020/03/Internship-Entry-Level-e1702495087380-768x1052.png'
 ];
 
@@ -14,25 +13,27 @@ const AnimatedZoomImages = () => {
     // Automatically switch images every 3 seconds
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000);
+    }, 3000);
 
     return () => clearInterval(interval); // Clean up interval on unmount
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen space-x-4">
+    <div className="flex justify-center items-center py-10 gap-8">
       {images.map((src, index) => (
         <motion.img
           key={index}
           src={src}
-          width={250}
-          height={200}
           alt={`Resume ${index + 1}`}
-          className="max-w-xs md:max-w-md lg:max-w-lg xl:max-w-xl rounded-lg shadow-lg"
+          className="w-48 md:w-60 rounded-lg shadow-2xl border-4 border-white object-cover"
           // Zoom effect based on the current active image
-          initial={{ scale: 0.8 }}
-          animate={{ scale: currentIndex === index ? 1.2 : 0.8 }} // Zoom in on the active image, zoom out on others
-          transition={{ duration: 0.6 }} // Smooth transition duration
+          initial={{ scale: 0.9, opacity: 0.7 }}
+          animate={{ 
+            scale: currentIndex === index ? 1.1 : 0.9,
+            opacity: currentIndex === index ? 1 : 0.7,
+            zIndex: currentIndex === index ? 10 : 1
+          }} 
+          transition={{ duration: 0.6 }} 
         />
       ))}
     </div>

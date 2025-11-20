@@ -33,6 +33,10 @@ const Summary = ({ enableNext }) => {
   }, []);
 
   const GenerateSummeryFromAi = async () => {
+    if (!resumeInfo?.jobTitle) {
+      toast.error("Please add a Job Title in 'Personal Details' first!");
+      return;
+    }
     setLoading(true);
     const PROMPT = prompt.replace("{jobTitle}", resumeInfo?.jobTitle);
 
@@ -42,12 +46,24 @@ const Summary = ({ enableNext }) => {
 
       console.log("AI Response Text:", responseText);
 
-      // Wrap the response in an array
-      const fixedResponseText = `[${responseText}]`;
+      // Clean up the response text to ensure it's valid JSON
+      const cleanText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
+      
+      // Wrap the response in an array if it's not already one (handling your specific prompt logic)
+      // Your prompt asks for JSON format, but sometimes it returns just the object or array.
+      // Let's try to parse it directly first.
+      let parsedResult;
+      try {
+          parsedResult = JSON.parse(cleanText);
+      } catch (e) {
+          // If direct parse fails, try wrapping in array as per your original code
+          parsedResult = JSON.parse(`[${cleanText}]`);
+      }
 
-      // Parse the corrected response
-      const parsedResult = JSON.parse(fixedResponseText);
-      setAiGeneratedSummeryList(parsedResult); // Set the parsed array
+      // Ensure it's an array
+      const finalResult = Array.isArray(parsedResult) ? parsedResult : [parsedResult];
+      
+      setAiGeneratedSummeryList(finalResult); 
     } catch (error) {
       console.error("Error generating summary:", error);
       toast.error("Failed to generate summary from AI.");
