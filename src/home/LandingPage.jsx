@@ -3,24 +3,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Sparkles, Atom, Edit, Share2 } from "lucide-react";
 import AnimatedImages from "./AnimatedImages";
 import ReviewSection from "@/components/custom/ReviwSection";
-import { 
-  CheckCircle, 
-  Zap, 
-  Users, 
-  Award, 
-  ArrowRight, 
-  Play, 
-  Star, 
-  TrendingUp, 
-  Shield, 
-  Clock,
-  Sparkles,
-  FileText,
-  Download,
-  Eye,
-  Brain,
-  Rocket
-} from "lucide-react";
 
 const LandingPage = () => {
   return (
