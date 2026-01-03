@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -101,4 +100,4 @@ const ResumeItem = ({ resume, refreshData }) => {
     )
 }
 
-export default ResumeItem
+export default ResumeItem;

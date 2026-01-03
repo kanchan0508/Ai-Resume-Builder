@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from '../components/ui/button'
 import AddResume from './AddResume'
 import GlobalApi from './../../Service/GlobalApi'
 import { useUser } from '@clerk/clerk-react'
 import ResumeItem from './ResumeItem'
+import { motion } from 'framer-motion'
+import { FileText, Plus, Sparkles } from 'lucide-react'
 
 const Dashboard = () => {
-  const { user } = useUser()  // Destructure the user from useUser
+  const { user } = useUser()
   const [resumeList, setResumeList] = useState([])
-
-  // Log the user object for debugging
-  useEffect(() => {
-    console.log("User object:", user)
-  }, [user])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (user && user?.primaryEmailAddress) {
@@ -22,21 +19,34 @@ const Dashboard = () => {
 
   const GetResumesList = () => {
     const emailAddress = user?.primaryEmailAddress?.emailAddress;
-   
-  
+    
     if (emailAddress) {
-      GlobalApi.GetUserResumes(emailAddress).then(res => { // Use "res" here
+      setLoading(true)
+      GlobalApi.GetUserResumes(emailAddress).then(res => {
         setResumeList(res.data.data);
-      
-  
+        setLoading(false)
       }).catch(err => {
         console.error("Error fetching resumes:", err);
+        setLoading(false)
       });
-    } else {
-      console.error("Email address is undefined!");
     }
   };
-  
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  }
+
   return (
     <div className='p-10 md:px-20 lg:px-32'>
       <h2 className='font-bold text-3xl'>My Resume</h2>
