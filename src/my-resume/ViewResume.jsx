@@ -29,7 +29,7 @@ const ViewResume = () => {
     <ResumeInfoContext.Provider value={{ resumeInfo, setResumeInfo }}>
       <div id="no-print">
         <Header />
-        <div className="my-10 mx-10 md:mx-20 lg:mx-36">
+        <div className="my-10 mx-10 md:mx-20 lg:mx-36 pt-36">
           <h2 className="text-center text-2xl font-medium">
             Congrats! Your Ultimate AI generates Resume is ready !
           </h2>
@@ -54,7 +54,7 @@ const ViewResume = () => {
       </div>
       <div className=" px-20">
         <div id="print-area">
-          <ResumePreview />
+          {resumeInfo ? <ResumePreview /> : <p className="text-center text-gray-500">Loading Resume...</p>}
         </div>
       </div>
     </ResumeInfoContext.Provider>
