@@ -18,7 +18,9 @@ function App() {
     < >
     
       <Header />
-      <Outlet />
+      <div className="pt-36 min-h-screen">
+        <Outlet />
+      </div>
       <Footer />
       <Toaster />
       
